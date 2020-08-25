@@ -1,3 +1,15 @@
+// eslint-disable-next-line no-unused-vars
+const convertFoo = ( modelElement, { writer } ) => (
+	<div class="lol foo bar" style="background:blue;color:white;" data-foo={ modelElement.getAttribute( 'foo' ) }>
+		Foo bar
+		<div class="inner-lol">
+			<attribute:strong>LOL, it works!</attribute:strong>
+		</div>
+		<empty:img/>
+		<raw:p renderFunction={ foo }></raw:p>
+	</div>
+);
+
 /**
  * JSX LOL plugin.
  * @param editor
@@ -16,7 +28,8 @@
  *						{
  *							runtime: 'classic',
  *							pragma: 'writer.createNestedElement',
- *							pragmaFrag: '"DocumentFragment"'
+ *							pragmaFrag: '"DocumentFragment"',
+ *							throwIfNamespace: false
  *						}
  *					]
  *				]
@@ -43,15 +56,12 @@ function LOL( editor ) {
 
 	editor.conversion.for( 'downcast' ).elementToElement( {
 		model: 'lol',
-		view: ( modelElement, { writer } ) => {
-			return <div class="lol foo bar baz" style="background:blue;color:white;" data-foo={ modelElement.getAttribute( 'foo' ) }>
-				Foo bar
-				<div class="inner-lol">
-					<strong>LOL, it works!</strong>
-				</div>
-			</div>;
-		}
+		view: convertFoo
 	} );
+}
+
+function foo( domElement ) {
+	domElement.innerHTML = '<span>Inner HTML</span>';
 }
 
 export default LOL;
